@@ -1,0 +1,7 @@
+interface:
+  display_name: "Storyboard Video Annotation"
+  short_description: "Add scene notes, shot images, and verified video deliverables"
+  default_prompt: "Use $storyboard-video-annotation to annotate this storyboard video and create Feishu records led by shot screenshots."
+
+policy:
+  allow_implicit_invocation: true
