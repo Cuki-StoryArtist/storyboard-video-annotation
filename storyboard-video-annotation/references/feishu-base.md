@@ -2,6 +2,18 @@
 
 Use the existing authenticated `lark-cli` and the `lark-base` command family. Do not build a replacement API client when the CLI supports the operation.
 
+## Drive destination and naming
+
+For this user's storyboard workflow, unless the current request overrides it:
+
+- use the user's Feishu `我的文档库` as the storage root; do not create or use an intermediate `故事板整理表格` folder;
+- create or reuse exactly one episode folder named `EPXX`, using the zero-padded episode number, for example `EP01`;
+- organize folders only by episode. Do not create scene, sequence, delivery-date, or task subfolders inside `EPXX`;
+- create one Base per scene and place it directly inside the matching `EPXX` folder. Name the Base `EPXX，xx场`, for example `我的文档库/EP01/EP01，3-3场`;
+- verify the resolved destination folder and final Base title before writing records.
+
+Do not fall back to an unrelated existing Base when Drive lookup or folder creation lacks authorization. Request the missing Feishu Drive/Base scopes, preserve the prepared local payload, and resume only after the user completes authorization. Do not partially write the scene to a temporary destination and call it complete.
+
 ## Record grain and keys
 
 - One row equals one Panel.
@@ -56,5 +68,7 @@ Use `base +view-set-visible-fields` to set the final visible field list and orde
 4. Upload the matching screenshot to `镜头截图` for every record.
 5. Read back projected fields including `镜头截图`, `Scene ID`, `Panel ID`, start/end timecodes, and review status.
 6. Verify record count, missing/extra composite keys, duplicates, timecode mismatches, missing attachment cells, and image-to-key alignment.
+
+Also read back or inspect the Drive parent path and Base title so the delivered link proves that the Base is stored directly under `我的文档库/EPXX`, with no scene-level subfolder, and has the requested `EPXX，xx场` name.
 
 Do not report Feishu completion while any expected Panel lacks a screenshot attachment. If an upload fails, retry only the failed record after verifying its key and path; do not recreate the whole table or duplicate successful rows.
